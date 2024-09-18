@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import profileImg from './img/profile.png';
-import user from './img/user-icon.png';
-import inbox from './img/email.png';
-import data from './img/data-analysis.png';
-import settings from './img/settings.png';
-import help from './img/costumer-service.png';
-import logout from './img/log-out.png';
+import React, { useState, useEffect, useRef } from 'react';
+import profileImg from './images/profile.png';
+import user from './images/user-icon.png';
+import inbox from './images/email.png';
+import data from './images/data-analysis.png';
+import settings from './images/settings.png';
+import help from './images/costumer-service.png';
+import logout from './images/log-out.png';
 import DropdownItem from './DropdownItem.jsx';
 
 function App() {
@@ -16,13 +16,29 @@ function App() {
     setOpen(!open)
   }
 
+  let menuRef = useRef();
+
+  useEffect(() => {
+    let handler = (e) => {
+      if (!menuRef.current.contains(e.target)) {
+        setOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handler);
+
+    return () => {
+      document.removeEventListener("mousedown", handler);
+    }
+  });
+
   return (
     <div className="App">
-      <div className="menu-container"  >
+      <div className="menu-container" ref={menuRef} >
         <div className="menu-trigger" onClick={handleMenuTrigger}>
           <img src={profileImg} />
         </div>
-        
+
         <div className={`dropdown-menu ${open ? "active" : "inactive"}`}>
           <div className="dropdown-menu-headings">
             <h3>Steven James</h3>
@@ -30,27 +46,27 @@ function App() {
           </div>
 
           <ul>
-            <DropdownItem 
+            <DropdownItem
               img={user}
               text="My Profile"
             />
-            <DropdownItem 
+            <DropdownItem
               img={inbox}
               text="Inbox"
             />
-            <DropdownItem 
+            <DropdownItem
               img={data}
               text="Analytics & Data"
             />
-            <DropdownItem 
+            <DropdownItem
               img={settings}
               text="Account Settings"
             />
-            <DropdownItem 
+            <DropdownItem
               img={help}
               text="Support"
             />
-            <DropdownItem 
+            <DropdownItem
               img={logout}
               text="Log Out"
             />
